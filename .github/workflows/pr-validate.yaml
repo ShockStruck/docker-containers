@@ -13,15 +13,15 @@ concurrency:
 
 jobs:
   simple-checks:
-    uses: shockstricken/containers/.github/workflows/simple-checks.yaml@main
+    uses: shockstruck/docker-containers/.github/workflows/simple-checks.yaml@main
 
   get-changed-images:
-    uses: shockstricken/containers/.github/workflows/get-changed-images.yaml@main
+    uses: shockstruck/docker-containers/.github/workflows/get-changed-images.yaml@main
 
   build-images:
     needs: ["simple-checks", "get-changed-images"]
     if: ${{ needs.get-changed-images.outputs.addedOrModified == 'true' }}
-    uses: shockstricken/containers/.github/workflows/build-images.yaml@main
+    uses: shockstuck/docker-containers/.github/workflows/build-images.yaml@main
     secrets: inherit
     with:
       appsToBuild: "${{ needs.get-changed-images.outputs.addedOrModifiedImages }}"
