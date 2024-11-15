@@ -52,7 +52,7 @@ RUN \
     && \
     rm -rf /app/bin/bin \
     && \
-    printf "UpdateMethod=docker\nBranch=master\nPackageVersion=%s\nPackageAuthor=[ShockStricken](https://github.com/shockstricken)\n" "${VERSION}" > /app/package_info \
+    printf "UpdateMethod=docker\nBranch=master\nPackageVersion=%s\nPackageAuthor=[ShockStruck](https://github.com/shockstruck)\n" "${VERSION}" > /app/package_info \
     && pip install --no-cache-dir --find-links https://wheel-index.linuxserver.io/alpine-3.20/ \
         --requirement /app/bin/requirements.txt \
         --requirement /app/bin/postgres-requirements.txt \
