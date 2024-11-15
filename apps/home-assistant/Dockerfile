@@ -1,4 +1,4 @@
-FROM docker.io/library/python:3.13.0-alpine
+FROM docker.io/library/python:3.12.7-alpine
 
 ARG TARGETPLATFORM
 ARG VERSION
@@ -11,8 +11,12 @@ ENV \
     PIP_NO_CACHE_DIR=1 \
     PIP_DISABLE_PIP_VERSION_CHECK=1 \
     PIP_BREAK_SYSTEM_PACKAGES=1 \
+    UV_SYSTEM_PYTHON=true \
+    UV_NO_CACHE=true \
+    CRYPTOGRAPHY_DONT_BUILD_RUST=1 \
     HOMEASSISTANT_WHEELS="https://wheels.home-assistant.io/musllinux/" \
-    HOME="/config"
+    HOME="/config" \
+    PYTHONPATH="/config/deps"
 
 ENV UMASK="0002" \
     TZ="Etc/UTC"
@@ -80,32 +84,29 @@ RUN \
     case "${TARGETPLATFORM}" in \
         'linux/amd64') \
             export ARCH='amd64'; \
+            export GO2RTC_SUFFIX='amd64'; \
         ;; \
         'linux/arm64') \
             export ARCH='aarch64'; \
+            export GO2RTC_SUFFIX='arm64'; \
         ;; \
     esac \
     && \
     HOME_ASSISTANT_BASE=$(curl -fsSL "https://raw.githubusercontent.com/home-assistant/core/${VERSION}/build.yaml" | grep "${ARCH}: " | cut -d ":" -f3) \
     && \
-    uv pip install --system --only-binary=:all: --find-links "${HOMEASSISTANT_WHEELS}" \
+    uv pip install --only-binary=:all: --find-links "${HOMEASSISTANT_WHEELS}" \
         --requirement "https://raw.githubusercontent.com/home-assistant/docker/${HOME_ASSISTANT_BASE}/requirements.txt" \
     && \
-    uv pip install --system --only-binary=:all: --find-links "${HOMEASSISTANT_WHEELS}" \
+    uv pip install --only-binary=:all: --find-links "${HOMEASSISTANT_WHEELS}" \
         --requirement /tmp/requirements_all.txt \
     && \
-    uv pip install --system --only-binary=:all: --find-links "${HOMEASSISTANT_WHEELS}" \
+    uv pip install --only-binary=:all: --find-links "${HOMEASSISTANT_WHEELS}" \
         homeassistant=="${VERSION}" \
-    && \
-    mkdir -p /config \
-    && chown nobody:nogroup -R /config \
-    && \
-    apk del --purge .build-deps \
-    && \
-    rm -rf \
-        /root/.cache \
-        /root/.cargo \
-        /tmp/*
+    && curl -L https://github.com/AlexxIT/go2rtc/releases/download/v1.9.6/go2rtc_linux_${GO2RTC_SUFFIX} --output /bin/go2rtc \
+    && chmod +x /bin/go2rtc \
+    && mkdir -p /config && chown nobody:nogroup -R /config \
+    && apk del --purge .build-deps \
+    && rm -rf /root/.cache /root/.cargo /tmp/*
 
 COPY ./apps/home-assistant/entrypoint.sh /entrypoint.sh
 
@@ -113,7 +114,6 @@ USER nobody:nogroup
 WORKDIR /config
 VOLUME ["/config"]
 
-ENTRYPOINT ["/usr/bin/catatonit", "--"]
-CMD ["/entrypoint.sh"]
+ENTRYPOINT ["/usr/bin/catatonit", "--", "/entrypoint.sh"]
 
 LABEL org.opencontainers.image.source="https://github.com/home-assistant/core"
