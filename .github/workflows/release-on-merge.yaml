@@ -18,7 +18,7 @@ on:
 
 jobs:
   simple-checks:
-    uses: shockstricken/containers/.github/workflows/simple-checks.yaml@main
+    uses: shockstruck/docker-containers/.github/workflows/simple-checks.yaml@main
 
   get-changed-images:
     needs: ["simple-checks"]
