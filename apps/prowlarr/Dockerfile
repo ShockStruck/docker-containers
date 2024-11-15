@@ -44,7 +44,7 @@ RUN \
     && \
     rm -rf /app/bin/Prowlarr.Update \
     && \
-    printf "UpdateMethod=docker\nBranch=%s\nPackageVersion=%s\nPackageAuthor=[ShockStruck](https://github.com/ShockStruck)\n" "${PROWLARR__UPDATE__BRANCH}" "${VERSION}" > /app/package_info \
+    printf "UpdateMethod=docker\nBranch=%s\nPackageVersion=%s\nPackageAuthor=[ShockStruck](https://github.com/shockstruck)\n" "${PROWLARR__UPDATE__BRANCH}" "${VERSION}" > /app/package_info \
     && chown -R root:root /app \
     && chmod -R 755 /app \
     && rm -rf /tmp/*
