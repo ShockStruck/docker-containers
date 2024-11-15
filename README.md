@@ -1,6 +1,6 @@
 <!---
 NOTE: AUTO-GENERATED FILE
-to edit this file, instead edit its template at: ./github/scripts/templates/README.md.j2
+to edit this file, instead edit its template at: ./scripts/templates/README.md.j2
 -->
 <div align="center">
 
@@ -13,13 +13,13 @@ _An opinionated collection of container images_
 
 <div align="center">
 
-![GitHub Repo stars](https://img.shields.io/github/stars/shockstruck/containers?style=for-the-badge)
-![GitHub forks](https://img.shields.io/github/forks/shockstruck/containers?style=for-the-badge)
-![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/shockstruck/containers/release-scheduled.yaml?style=for-the-badge&label=Scheduled%20Release)
+![GitHub Repo stars](https://img.shields.io/github/stars/onedr0p/containers?style=for-the-badge)
+![GitHub forks](https://img.shields.io/github/forks/onedr0p/containers?style=for-the-badge)
+![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/onedr0p/containers/release-scheduled.yaml?style=for-the-badge&label=Scheduled%20Release)
 
 </div>
 
-Welcome to my container images, if looking for a container start by [browsing the GitHub Packages page for this repo's packages](https://github.com/shockstruck?tab=packages&repo_name=containers).
+Welcome to my container images, if looking for a container start by [browsing the GitHub Packages page for this repo's packages](https://github.com/onedr0p?tab=packages&repo_name=containers).
 
 ## Mission statement
 
@@ -35,10 +35,10 @@ We do take a similar approach but instead of appending a `-ls69` or `-r420` pref
 
 | Container                                          | Immutable |
 |----------------------------------------------------|-----------|
-| `ghcr.io/shockstruck/sonarr:rolling`                   | ❌         |
-| `ghcr.io/shockstruck/sonarr:3.0.8.1507`                | ❌         |
-| `ghcr.io/shockstruck/sonarr:rolling@sha256:8053...`    | ✅         |
-| `ghcr.io/shockstruck/sonarr:3.0.8.1507@sha256:8053...` | ✅         |
+| `ghcr.io/onedr0p/sonarr:rolling`                   | ❌         |
+| `ghcr.io/onedr0p/sonarr:3.0.8.1507`                | ❌         |
+| `ghcr.io/onedr0p/sonarr:rolling@sha256:8053...`    | ✅         |
+| `ghcr.io/onedr0p/sonarr:3.0.8.1507@sha256:8053...` | ✅         |
 
 _If pinning an image to the sha256 digest, tools like [Renovate](https://github.com/renovatebot/renovate) support updating the container on a digest or application version change._
 
@@ -55,7 +55,7 @@ networks:
     external: true
 services:
   sonarr:
-    image: ghcr.io/shockstruck/sonarr:3.0.8.1507
+    image: ghcr.io/onedr0p/sonarr:3.0.8.1507
     container_name: sonarr
     user: 65534:65534
     # ...
@@ -89,11 +89,10 @@ Some applications do not support defining configuration via environment variable
 
 1. First read the Kubernetes docs on [defining command and arguments for a Container](https://kubernetes.io/docs/tasks/inject-data-application/define-command-argument-container/).
 2. Look up the documentation for the application and find a argument you would like to set.
-3. Set the argument in the `args` section, be sure to include `entrypoint.sh` as the first arg and any application specific arguments thereafter.
+3. Set the extra arguments in the `args` section like below.
 
     ```yaml
     args:
-      - /entrypoint.sh
       - --port
       - "8080"
     ```
@@ -108,37 +107,37 @@ Each Image will be built with a `rolling` tag, along with tags specific to it's 
 
 Container | Channel | Image
 --- | --- | ---
-[actions-runner](https://github.com/ShockStruck/docker-containers/pkgs/container/actions-runner) | stable | ghcr.io/ShockStruck/actions-runner
-[autoscan](https://github.com/ShockStruck/docker-containers/pkgs/container/autoscan) | stable | ghcr.io/ShockStruck/autoscan
-[bazarr](https://github.com/ShockStruck/docker-containers/pkgs/container/bazarr) | stable | ghcr.io/ShockStruck/bazarr
-[cdpgvector](https://github.com/ShockStruck/docker-containers/pkgs/container/cdpgvector) | stable | ghcr.io/ShockStruck/cdpgvector
-[deemix-latest](https://github.com/ShockStruck/docker-containers/pkgs/container/deemix-latest) | latest | ghcr.io/ShockStruck/deemix-latest
-[emby](https://github.com/ShockStruck/docker-containers/pkgs/container/emby) | stable | ghcr.io/ShockStruck/emby
-[home-assistant](https://github.com/ShockStruck/docker-containers/pkgs/container/home-assistant) | stable | ghcr.io/ShockStruck/home-assistant
-[jbops](https://github.com/ShockStruck/docker-containers/pkgs/container/jbops) | stable | ghcr.io/ShockStruck/jbops
-[lidarr](https://github.com/ShockStruck/docker-containers/pkgs/container/lidarr) | master | ghcr.io/ShockStruck/lidarr
-[lidarr-develop](https://github.com/ShockStruck/docker-containers/pkgs/container/lidarr-develop) | develop | ghcr.io/ShockStruck/lidarr-develop
-[lidarr-nightly](https://github.com/ShockStruck/docker-containers/pkgs/container/lidarr-nightly) | nightly | ghcr.io/ShockStruck/lidarr-nightly
-[lidarr-plugins](https://github.com/ShockStruck/docker-containers/pkgs/container/lidarr-plugins) | plugins | ghcr.io/ShockStruck/lidarr-plugins
-[par2cmdline-turbo](https://github.com/ShockStruck/docker-containers/pkgs/container/par2cmdline-turbo) | stable | ghcr.io/ShockStruck/par2cmdline-turbo
-[plex](https://github.com/ShockStruck/docker-containers/pkgs/container/plex) | stable | ghcr.io/ShockStruck/plex
-[plex-beta](https://github.com/ShockStruck/docker-containers/pkgs/container/plex-beta) | beta | ghcr.io/ShockStruck/plex-beta
-[postgres-init](https://github.com/ShockStruck/docker-containers/pkgs/container/postgres-init) | stable | ghcr.io/ShockStruck/postgres-init
-[prowlarr](https://github.com/ShockStruck/docker-containers/pkgs/container/prowlarr) | master | ghcr.io/ShockStruck/prowlarr
-[prowlarr-develop](https://github.com/ShockStruck/docker-containers/pkgs/container/prowlarr-develop) | develop | ghcr.io/ShockStruck/prowlarr-develop
-[prowlarr-nightly](https://github.com/ShockStruck/docker-containers/pkgs/container/prowlarr-nightly) | nightly | ghcr.io/ShockStruck/prowlarr-nightly
-[qbittorrent](https://github.com/ShockStruck/docker-containers/pkgs/container/qbittorrent) | stable | ghcr.io/ShockStruck/qbittorrent
-[qbittorrent-beta](https://github.com/ShockStruck/docker-containers/pkgs/container/qbittorrent-beta) | beta | ghcr.io/ShockStruck/qbittorrent-beta
-[radarr](https://github.com/ShockStruck/docker-containers/pkgs/container/radarr) | master | ghcr.io/ShockStruck/radarr
-[radarr-develop](https://github.com/ShockStruck/docker-containers/pkgs/container/radarr-develop) | develop | ghcr.io/ShockStruck/radarr-develop
-[radarr-nightly](https://github.com/ShockStruck/docker-containers/pkgs/container/radarr-nightly) | nightly | ghcr.io/ShockStruck/radarr-nightly
-[readarr-develop](https://github.com/ShockStruck/docker-containers/pkgs/container/readarr-develop) | develop | ghcr.io/ShockStruck/readarr-develop
-[readarr-nightly](https://github.com/ShockStruck/docker-containers/pkgs/container/readarr-nightly) | nightly | ghcr.io/ShockStruck/readarr-nightly
-[sabnzbd](https://github.com/ShockStruck/docker-containers/pkgs/container/sabnzbd) | stable | ghcr.io/ShockStruck/sabnzbd
-[sonarr](https://github.com/ShockStruck/docker-containers/pkgs/container/sonarr) | main | ghcr.io/ShockStruck/sonarr
-[sonarr-develop](https://github.com/ShockStruck/docker-containers/pkgs/container/sonarr-develop) | develop | ghcr.io/ShockStruck/sonarr-develop
-[theme-park](https://github.com/ShockStruck/docker-containers/pkgs/container/theme-park) | stable | ghcr.io/ShockStruck/theme-park
-[volsync](https://github.com/ShockStruck/docker-containers/pkgs/container/volsync) | stable | ghcr.io/ShockStruck/volsync
+[actions-runner](https://github.com/ShockStruck/pkgs/container/actions-runner) | stable | ghcr.io/ShockStruck/actions-runner
+[autoscan](https://github.com/ShockStruck/pkgs/container/autoscan) | stable | ghcr.io/ShockStruck/autoscan
+[bazarr](https://github.com/ShockStruck/pkgs/container/bazarr) | stable | ghcr.io/ShockStruck/bazarr
+[cdpgvector](https://github.com/ShockStruck/pkgs/container/cdpgvector) | stable | ghcr.io/ShockStruck/cdpgvector
+[deemix-latest](https://github.com/ShockStruck/pkgs/container/deemix-latest) | latest | ghcr.io/ShockStruck/deemix-latest
+[emby](https://github.com/ShockStruck/pkgs/container/emby) | stable | ghcr.io/ShockStruck/emby
+[home-assistant](https://github.com/ShockStruck/pkgs/container/home-assistant) | stable | ghcr.io/ShockStruck/home-assistant
+[jbops](https://github.com/ShockStruck/pkgs/container/jbops) | stable | ghcr.io/ShockStruck/jbops
+[lidarr](https://github.com/ShockStruck/pkgs/container/lidarr) | master | ghcr.io/ShockStruck/lidarr
+[lidarr-develop](https://github.com/ShockStruck/pkgs/container/lidarr-develop) | develop | ghcr.io/ShockStruck/lidarr-develop
+[lidarr-nightly](https://github.com/ShockStruck/pkgs/container/lidarr-nightly) | nightly | ghcr.io/ShockStruck/lidarr-nightly
+[lidarr-plugins](https://github.com/ShockStruck/pkgs/container/lidarr-plugins) | plugins | ghcr.io/ShockStruck/lidarr-plugins
+[par2cmdline-turbo](https://github.com/ShockStruck/pkgs/container/par2cmdline-turbo) | stable | ghcr.io/ShockStruck/par2cmdline-turbo
+[plex](https://github.com/ShockStruck/pkgs/container/plex) | stable | ghcr.io/ShockStruck/plex
+[plex-beta](https://github.com/ShockStruck/pkgs/container/plex-beta) | beta | ghcr.io/ShockStruck/plex-beta
+[postgres-init](https://github.com/ShockStruck/pkgs/container/postgres-init) | stable | ghcr.io/ShockStruck/postgres-init
+[prowlarr](https://github.com/ShockStruck/pkgs/container/prowlarr) | master | ghcr.io/ShockStruck/prowlarr
+[prowlarr-develop](https://github.com/ShockStruck/pkgs/container/prowlarr-develop) | develop | ghcr.io/ShockStruck/prowlarr-develop
+[prowlarr-nightly](https://github.com/ShockStruck/pkgs/container/prowlarr-nightly) | nightly | ghcr.io/ShockStruck/prowlarr-nightly
+[qbittorrent](https://github.com/ShockStruck/pkgs/container/qbittorrent) | stable | ghcr.io/ShockStruck/qbittorrent
+[qbittorrent-beta](https://github.com/ShockStruck/pkgs/container/qbittorrent-beta) | beta | ghcr.io/ShockStruck/qbittorrent-beta
+[radarr](https://github.com/ShockStruck/pkgs/container/radarr) | master | ghcr.io/ShockStruck/radarr
+[radarr-develop](https://github.com/ShockStruck/pkgs/container/radarr-develop) | develop | ghcr.io/ShockStruck/radarr-develop
+[radarr-nightly](https://github.com/ShockStruck/pkgs/container/radarr-nightly) | nightly | ghcr.io/ShockStruck/radarr-nightly
+[readarr-develop](https://github.com/ShockStruck/pkgs/container/readarr-develop) | develop | ghcr.io/ShockStruck/readarr-develop
+[readarr-nightly](https://github.com/ShockStruck/pkgs/container/readarr-nightly) | nightly | ghcr.io/ShockStruck/readarr-nightly
+[sabnzbd](https://github.com/ShockStruck/pkgs/container/sabnzbd) | stable | ghcr.io/ShockStruck/sabnzbd
+[sonarr](https://github.com/ShockStruck/pkgs/container/sonarr) | main | ghcr.io/ShockStruck/sonarr
+[sonarr-develop](https://github.com/ShockStruck/pkgs/container/sonarr-develop) | develop | ghcr.io/ShockStruck/sonarr-develop
+[theme-park](https://github.com/ShockStruck/pkgs/container/theme-park) | stable | ghcr.io/ShockStruck/theme-park
+[volsync](https://github.com/ShockStruck/pkgs/container/volsync) | stable | ghcr.io/ShockStruck/volsync
 
 
 ## Deprecations
