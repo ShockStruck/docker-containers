@@ -13,13 +13,13 @@ _An opinionated collection of container images_
 
 <div align="center">
 
-![GitHub Repo stars](https://img.shields.io/github/stars/onedr0p/containers?style=for-the-badge)
-![GitHub forks](https://img.shields.io/github/forks/onedr0p/containers?style=for-the-badge)
-![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/onedr0p/containers/release-scheduled.yaml?style=for-the-badge&label=Scheduled%20Release)
+![GitHub Repo stars](https://img.shields.io/github/stars/shockstruck/containers?style=for-the-badge)
+![GitHub forks](https://img.shields.io/github/forks/shockstruck/containers?style=for-the-badge)
+![GitHub Workflow Status (with event)](https://img.shields.io/github/actions/workflow/status/shockstruck/containers/release-scheduled.yaml?style=for-the-badge&label=Scheduled%20Release)
 
 </div>
 
-Welcome to my container images, if looking for a container start by [browsing the GitHub Packages page for this repo's packages](https://github.com/onedr0p?tab=packages&repo_name=containers).
+Welcome to my container images, if looking for a container start by [browsing the GitHub Packages page for this repo's packages](https://github.com/shockstruck?tab=packages&repo_name=containers).
 
 ## Mission statement
 
@@ -35,10 +35,10 @@ We do take a similar approach but instead of appending a `-ls69` or `-r420` pref
 
 | Container                                          | Immutable |
 |----------------------------------------------------|-----------|
-| `ghcr.io/onedr0p/sonarr:rolling`                   | ❌         |
-| `ghcr.io/onedr0p/sonarr:3.0.8.1507`                | ❌         |
-| `ghcr.io/onedr0p/sonarr:rolling@sha256:8053...`    | ✅         |
-| `ghcr.io/onedr0p/sonarr:3.0.8.1507@sha256:8053...` | ✅         |
+| `ghcr.io/shockstruck/sonarr:rolling`                   | ❌         |
+| `ghcr.io/shockstruck/sonarr:3.0.8.1507`                | ❌         |
+| `ghcr.io/shockstruck/sonarr:rolling@sha256:8053...`    | ✅         |
+| `ghcr.io/shockstruck/sonarr:3.0.8.1507@sha256:8053...` | ✅         |
 
 _If pinning an image to the sha256 digest, tools like [Renovate](https://github.com/renovatebot/renovate) support updating the container on a digest or application version change._
 
@@ -55,7 +55,7 @@ networks:
     external: true
 services:
   sonarr:
-    image: ghcr.io/onedr0p/sonarr:3.0.8.1507
+    image: ghcr.io/shockstruck/sonarr:3.0.8.1507
     container_name: sonarr
     user: 65534:65534
     # ...
@@ -134,8 +134,8 @@ Container | Channel | Image
 [readarr-develop](https://github.com/ShockStruck/pkgs/container/readarr-develop) | develop | ghcr.io/ShockStruck/readarr-develop
 [readarr-nightly](https://github.com/ShockStruck/pkgs/container/readarr-nightly) | nightly | ghcr.io/ShockStruck/readarr-nightly
 [sabnzbd](https://github.com/ShockStruck/pkgs/container/sabnzbd) | stable | ghcr.io/ShockStruck/sabnzbd
-[sonarr](https://github.com/ShockStruck/pkgs/container/sonarr) | main | ghcr.io/ShockStruck/sonarr
-[sonarr-develop](https://github.com/ShockStruck/pkgs/container/sonarr-develop) | develop | ghcr.io/ShockStruck/sonarr-develop
+[sonarr-main](https://github.com/ShockStruck/pkgs/container/sonarr-main) | main | ghcr.io/ShockStruck/sonarr-main
+[sonarr-main-develop](https://github.com/ShockStruck/pkgs/container/sonarr-main-develop) | develop | ghcr.io/ShockStruck/sonarr-main-develop
 [theme-park](https://github.com/ShockStruck/pkgs/container/theme-park) | stable | ghcr.io/ShockStruck/theme-park
 [volsync](https://github.com/ShockStruck/pkgs/container/volsync) | stable | ghcr.io/ShockStruck/volsync
 
