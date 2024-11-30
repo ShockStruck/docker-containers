@@ -1,5 +1,5 @@
 ---
-app: sonarr-main
+app: sonarr
 semver: true
 channels:
   - name: main
