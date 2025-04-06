@@ -5,6 +5,13 @@ process:
     running: true
     executable: /app/emby/EmbyServer
 
+# Command to verify the process user
+command:
+  check-emby-user:
+    exec: "ps -u nobody -o comm | grep EmbyServer"
+    exit-status: 0
+    timeout: 5000
+
 # Port validation
 port:
   tcp:8096:
