@@ -79,20 +79,24 @@ RUN <<EOT
         exit 1
     }
     ls -lR /tmp/opt/emby-server/  # Debug: Show all files
-    if [ ! -f /tmp/opt/emby-server/system/EmbyServer ]; then
-        echo "Error: EmbyServer not in expected location, searching..." >&2
-        find /tmp/opt/emby-server -name "EmbyServer" -exec cp -v {} /app/emby/ \; || {
-            echo "Error: EmbyServer not found anywhere in RPM" >&2
+    # Explicitly move EmbyServer and other critical files
+    [ -f /tmp/opt/emby-server/system/EmbyServer ] && mv /tmp/opt/emby-server/system/EmbyServer /app/emby/ || {
+        echo "Error: EmbyServer not found at /tmp/opt/emby-server/system/EmbyServer" >&2
+        find /tmp/opt/emby-server -name "EmbyServer" -exec mv -v {} /app/emby/ \; || {
+            echo "Error: EmbyServer not found in RPM" >&2
             exit 1
         }
-    else
-        mv -t /app/emby /tmp/opt/emby-server/*
-    fi
+    }
+    mv -t /app/emby /tmp/opt/emby-server/*/*  # Move all subdirectories
     chown -R root:root /app
     chmod -R 755 /app
     chown nobody:nogroup /config
     chmod 755 /config
-    ls -l /app/emby/  # Debug: Verify
+    ls -l /app/emby/  # Debug: Verify EmbyServer is present
+    [ -f /app/emby/EmbyServer ] || {
+        echo "Error: EmbyServer not in /app/emby after move" >&2
+        exit 1
+    }
 
     echo "**** Cleaning up ****"
     apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false
