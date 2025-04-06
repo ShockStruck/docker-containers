@@ -19,9 +19,6 @@ http:
   http://localhost:8096/web:
     status: 200
     timeout: 5000
-    # Adjust or remove headers based on curl -I output
-    headers:
-      - "Server: EmbyServer"  # Example; confirm with actual response
 
 file:
   /app/emby/EmbyServer:
