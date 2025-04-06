@@ -1,16 +1,56 @@
 ---
-# https://github.com/aelsabbahy/goss/blob/master/docs/manual.md#process
+# Process validation for EmbyServer
 process:
   EmbyServer:
     running: true
+    # Ensure it runs as the expected user (nobody) from your Dockerfile
+    user: nobody
+    # Optional: Check the executable path if you want to be specific
+    executable: /app/emby/EmbyServer
 
-# https://github.com/aelsabbahy/goss/blob/master/docs/manual.md#port
+# Port validation
 port:
-  # https://github.com/aelsabbahy/goss/issues/149
-  tcp6:8096:
+  # Emby default HTTP port
+  tcp:8096:
     listening: true
+    ip:
+      - 0.0.0.0  # Ensure it binds to all interfaces
+  # Optional: Check HTTPS port if enabled in your setup
+  tcp:8920:
+    listening: false  # Set to true if HTTPS is configured
 
-# https://github.com/aelsabbahy/goss/blob/master/docs/manual.md#http
+# HTTP endpoint validation
 http:
   http://localhost:8096/web:
     status: 200
+    allow-insecure: false  # Enforce valid SSL if applicable
+    timeout: 5000  # 5 seconds timeout in milliseconds
+    # Optional: Add headers or body checks if needed
+    headers:
+      - "Server: Emby"  # Validate Emby-specific response header
+    # Optional: Check for specific content in the body
+    # body:
+    #   - "Emby"
+
+# Optional: File validation for critical paths
+file:
+  /app/emby/EmbyServer:
+    exists: true
+    mode: "0755"
+    owner: root
+    group: root
+  /config:
+    exists: true
+    mode: "0755"
+    owner: nobody
+    group: nogroup
+    filetype: directory
+
+# Optional: Environment variable validation
+env:
+  LD_LIBRARY_PATH:
+    matches: "/app/emby.*"
+  FONTCONFIG_PATH:
+    equals: "/app/emby/etc/fonts"
+  SSL_CERT_FILE:
+    equals: "/app/emby/etc/ssl/certs/ca-certificates.crt"
