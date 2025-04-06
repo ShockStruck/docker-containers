@@ -1,14 +1,13 @@
 ---
-# Process validation for EmbyServer
+# Process validation for EmbyServer (minimal)
 process:
   EmbyServer:
     running: true
-    executable: /app/emby/EmbyServer
 
-# Command to verify the process user
+# Command to verify the process user and executable
 command:
-  check-emby-user:
-    exec: "ps -u nobody -o comm | grep EmbyServer"
+  check-emby-process:
+    exec: "ps -u nobody -o comm | grep -q EmbyServer && [ -x /app/emby/EmbyServer ]"
     exit-status: 0
     timeout: 5000
 
