@@ -3,36 +3,24 @@
 process:
   EmbyServer:
     running: true
-    # Ensure it runs as the expected user (nobody) from your Dockerfile
-    user: nobody
-    # Optional: Check the executable path if you want to be specific
     executable: /app/emby/EmbyServer
 
 # Port validation
 port:
-  # Emby default HTTP port
   tcp:8096:
     listening: true
     ip:
-      - 0.0.0.0  # Ensure it binds to all interfaces
-  # Optional: Check HTTPS port if enabled in your setup
-  tcp:8920:
-    listening: false  # Set to true if HTTPS is configured
+      - 0.0.0.0
 
 # HTTP endpoint validation
 http:
   http://localhost:8096/web:
     status: 200
-    allow-insecure: false  # Enforce valid SSL if applicable
-    timeout: 5000  # 5 seconds timeout in milliseconds
-    # Optional: Add headers or body checks if needed
+    timeout: 5000
     headers:
-      - "Server: Emby"  # Validate Emby-specific response header
-    # Optional: Check for specific content in the body
-    # body:
-    #   - "Emby"
+      - "Server: Emby"
 
-# Optional: File validation for critical paths
+# File validation for critical paths
 file:
   /app/emby/EmbyServer:
     exists: true
@@ -46,7 +34,7 @@ file:
     group: nogroup
     filetype: directory
 
-# Optional: Environment variable validation
+# Environment variable validation
 env:
   LD_LIBRARY_PATH:
     matches: "/app/emby.*"
