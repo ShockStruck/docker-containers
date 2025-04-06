@@ -1,22 +1,17 @@
-# Base image
 FROM docker.io/library/ubuntu:24.04
 
-# Build arguments
 ARG TARGETPLATFORM
 ARG VERSION
 ARG CHANNEL
 
-# Environment variables
 ENV DEBCONF_NONINTERACTIVE_SEEN="true" \
     DEBIAN_FRONTEND="noninteractive" \
     NVIDIA_DRIVER_CAPABILITIES="compute,video,utility" \
     UMASK="0002" \
     TZ="Etc/UTC"
 
-# Set working directory
 WORKDIR /tmp
 
-# Install dependencies based on architecture
 RUN <<EOT
     set -xe
     apt-get update
@@ -37,7 +32,10 @@ RUN <<EOT
                 xmlstarlet \
                 cpio \
                 rpm2cpio \
-                mesa-va-drivers
+                mesa-va-drivers \
+                libsqlite3-0 \
+                libfontconfig1 \
+                libssl3
             ;;
         'linux/arm64')
             export ARCH='aarch64'
@@ -58,7 +56,10 @@ RUN <<EOT
                 rpm2cpio \
                 libomxil-bellagio0 \
                 libomxil-bellagio-bin \
-                libraspberrypi0
+                libraspberrypi0 \
+                libsqlite3-0 \
+                libfontconfig1 \
+                libssl3
             ;;
         *)
             echo "Unsupported platform: ${TARGETPLATFORM}" >&2
@@ -66,41 +67,33 @@ RUN <<EOT
             ;;
     esac
 
-    # Install Emby
     echo "**** Installing Emby ****"
-    mkdir -p /app/emby /tmp/emby
+    mkdir -p /app/emby /tmp/emby /config
     curl -fsSL -o /tmp/emby.rpm \
         "https://github.com/MediaBrowser/Emby.Releases/releases/download/${VERSION}/emby-server-rpm_${VERSION}_${ARCH}.rpm"
     rpm2cpio /tmp/emby.rpm | cpio -idm
-    mv -t /app/emby \
-        /tmp/opt/emby-server/system/* \
-        /tmp/opt/emby-server/lib/* \
-        /tmp/opt/emby-server/bin/ff* \
-        /tmp/opt/emby-server/etc \
-        /tmp/opt/emby-server/extra/lib/*
+    mv -t /app/emby /tmp/opt/emby-server/*
+    chown -R root:root /app
+    chmod -R 755 /app
+    chown nobody:nogroup /config
+    chmod 755 /config
 
-    # Cleanup
     echo "**** Cleaning up ****"
     apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false
     apt-get autoremove -y
     apt-get clean
     rm -rf /tmp/* /var/lib/apt/lists/* /var/tmp/*
-    chown -R root:root /app
-    chmod -R 755 /app
     printf "umask %d" "${UMASK}" >> /etc/bash.bashrc
 EOT
 
-# Copy entrypoint script
 COPY ./apps/emby/entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
 
-# Switch to non-root user
 USER nobody:nogroup
 WORKDIR /config
 VOLUME ["/config"]
 
-# Entrypoint and command
-ENTRYPOINT ["/usr/bin/catatonit", "--"]
-CMD ["/entrypoint.sh"]
+ENTRYPOINT ["/entrypoint.sh"]
+CMD []
 
-# Metadata
 LABEL org.opencontainers.image.source="https://github.com/MediaBrowser/Emby"
