@@ -15,7 +15,7 @@ WORKDIR /tmp
 RUN <<EOT
     set -xe
     apt-get update
-    case "${ TARGETPLATFORM}" in
+    case "${TARGETPLATFORM}" in
         'linux/amd64')
             export ARCH='x86_64'
             apt-get install -y --no-install-recommends \
@@ -70,19 +70,29 @@ RUN <<EOT
     echo "**** Installing Emby ****"
     mkdir -p /app/emby /tmp/emby /config
     curl -fsSL -o /tmp/emby.rpm \
-        "https://github.com/MediaBrowser/Emby.Releases/releases/download/${VERSION}/emby-server-rpm_${VERSION}_${ARCH}.rpm"
-    rpm2cpio /tmp/emby.rpm | cpio -idmv
-    ls -l /tmp/opt/emby-server/system/  # Debug: Check contents
-    if [ ! -f /tmp/opt/emby-server/system/EmbyServer ]; then
-        echo "Error: EmbyServer binary not found in RPM" >&2
+        "https://github.com/MediaBrowser/Emby.Releases/releases/download/${VERSION}/emby-server-rpm_${VERSION}_${ARCH}.rpm" || {
+        echo "Error: Failed to download RPM for VERSION=${VERSION}, ARCH=${ARCH}" >&2
         exit 1
+    }
+    rpm2cpio /tmp/emby.rpm | cpio -idmv || {
+        echo "Error: Failed to extract RPM" >&2
+        exit 1
+    }
+    ls -lR /tmp/opt/emby-server/  # Debug: Show all files
+    if [ ! -f /tmp/opt/emby-server/system/EmbyServer ]; then
+        echo "Error: EmbyServer not in expected location, searching..." >&2
+        find /tmp/opt/emby-server -name "EmbyServer" -exec cp -v {} /app/emby/ \; || {
+            echo "Error: EmbyServer not found anywhere in RPM" >&2
+            exit 1
+        }
+    else
+        mv -t /app/emby /tmp/opt/emby-server/*
     fi
-    mv -t /app/emby /tmp/opt/emby-server/*  # Copy everything
     chown -R root:root /app
     chmod -R 755 /app
     chown nobody:nogroup /config
     chmod 755 /config
-    ls -l /app/emby/  # Debug: Verify EmbyServer is present
+    ls -l /app/emby/  # Debug: Verify
 
     echo "**** Cleaning up ****"
     apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false
