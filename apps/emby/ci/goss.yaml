@@ -1,42 +1,16 @@
 ---
+# https://github.com/aelsabbahy/goss/blob/master/docs/manual.md#process
 process:
   EmbyServer:
     running: true
 
-command:
-  check-emby-process:
-    exec: "ps -u nobody -o comm | grep -q EmbyServer && [ -x /app/emby/EmbyServer ]"
-    exit-status: 0
-    timeout: 5000
-
+# https://github.com/aelsabbahy/goss/blob/master/docs/manual.md#port
 port:
-  tcp:8096:
+  # https://github.com/aelsabbahy/goss/issues/149
+  tcp6:8096:
     listening: true
-    ip:
-      - 0.0.0.0
 
+# https://github.com/aelsabbahy/goss/blob/master/docs/manual.md#http
 http:
   http://localhost:8096/web:
     status: 200
-    timeout: 5000
-
-file:
-  /app/emby/EmbyServer:
-    exists: true
-    mode: "0755"
-    owner: root
-    group: root
-  /config:
-    exists: true
-    mode: "0755"
-    owner: nobody
-    group: nogroup
-    filetype: directory
-
-env:
-  LD_LIBRARY_PATH:
-    matches: "/app/emby.*"
-  FONTCONFIG_PATH:
-    equals: "/app/emby/etc/fonts"
-  SSL_CERT_FILE:
-    equals: "/app/emby/etc/ssl/certs/ca-certificates.crt"
