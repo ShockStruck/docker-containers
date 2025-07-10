@@ -9,7 +9,7 @@ permissions:
 
 jobs:
   check-keywords:
-    runs-on: [ubuntu-latest]
+    runs-on: gha-runner-scale-set
     steps:
       - name: Check issue message for keywords
         id: check_keywords
